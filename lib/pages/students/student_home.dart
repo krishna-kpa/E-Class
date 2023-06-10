@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/pages/students/components/home_button.dart';
+import 'package:e_class/pages/common widgets/home_button.dart';
 
 class StudentHome extends StatelessWidget {
   const StudentHome({super.key});

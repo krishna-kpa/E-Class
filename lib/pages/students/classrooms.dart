@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/pages/students/components/schemes_button.dart';
+import 'package:e_class/pages/common widgets//schemes_button.dart';
 import 'package:e_class/data/schemes.dart';
 
 class Classrooms extends StatelessWidget{
@@ -16,7 +16,7 @@ class Classrooms extends StatelessWidget{
   @override
   Widget build(context){
     return  SizedBox(
-      child: DecoratedBox(
+      child: DecoratedBox( 
         decoration: const BoxDecoration(
           color: Colors.white
         ),

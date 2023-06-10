@@ -1,4 +1,4 @@
-import 'package:e_class/pages/students/components/individual_subject_button.dart';
+import 'package:e_class/pages/common widgets/individual_subject_button.dart';
 import 'package:flutter/material.dart';
 
 class Subject extends StatelessWidget {

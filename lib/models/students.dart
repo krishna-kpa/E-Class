@@ -5,4 +5,5 @@ class Students{
   String mail;
   String password;
   int batchId;
+  int type=1;
 }

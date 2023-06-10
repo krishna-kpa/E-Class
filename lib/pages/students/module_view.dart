@@ -1,5 +1,5 @@
 import 'package:e_class/data/subjects.dart';
-import 'package:e_class/pages/students/components/module_button.dart';
+import 'package:e_class/pages/common widgets/module_button.dart';
 import 'package:flutter/material.dart';
 import 'package:e_class/data/subjects_created.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:e_class/data/notes.dart';
 import 'package:e_class/data/assignments.dart';
 import 'package:e_class/data/textbooks.dart';
-import 'package:e_class/pages/students/components/single_view_button.dart';
+import 'package:e_class/pages/common widgets/single_view_button.dart';
 
 class SingleView extends StatelessWidget {
   const SingleView(this.heading,this.subjectId,this.moduleNo,{super.key});

@@ -1,3 +1,4 @@
+import 'package:e_class/pages/students/student_home.dart';
 import 'package:flutter/material.dart';
 import 'package:e_class/data/users.dart';
 
@@ -20,16 +21,18 @@ class _LoginState extends State<Login> {
       users = users;
       dynamic userData;
       for(var i=0;i<users.length;i++){
-        if(users[i].admissionNo==userName.text){
+        if(users[i].admissionNo.toUpperCase()==userName.text.toUpperCase()){
           userData = users[i];
           break;
         }
       }
       if(userData != null){
         if(userData.password==password.text){
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-        return  Text(userData.password);
+          if(userData.type==1){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+            return const StudentHome();
       }));
+          }
         }else{
           Navigator.push(context, MaterialPageRoute(builder: (context){
         return  const Login();

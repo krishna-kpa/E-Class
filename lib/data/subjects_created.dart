@@ -6,7 +6,7 @@ import 'package:e_class/models/subjects_created.dart';
   int assignedBatchId;
   int teachersId;
 */
-
+ 
 final subjectsCreated = [
   SubjectsCreate(1, 1, 1, 1),
   SubjectsCreate(2, 1, 1, 2),
