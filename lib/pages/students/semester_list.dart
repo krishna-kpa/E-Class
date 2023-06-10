@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/pages/students/widgets/semester_button.dart';
+import 'package:e_class/pages/students/components/semester_button.dart';
 
 class SemesterList extends StatelessWidget {
   const SemesterList(this.schemeId, {super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/pages/students/widgets/schemes_button.dart';
+import 'package:e_class/pages/students/components/schemes_button.dart';
 import 'package:e_class/data/schemes.dart';
 
 class Classrooms extends StatelessWidget{

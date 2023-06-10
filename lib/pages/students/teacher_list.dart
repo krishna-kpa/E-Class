@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/pages/students/widgets/teacher_button.dart';
+import 'package:e_class/pages/students/components/teacher_button.dart';
 import 'package:e_class/data/subjects_created.dart';
 
 // ignore: must_be_immutable

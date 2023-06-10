@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/pages/students/widgets/home_button.dart';
+import 'package:e_class/pages/students/components/home_button.dart';
 
 class StudentHome extends StatelessWidget {
   const StudentHome({super.key});
@@ -10,7 +10,7 @@ class StudentHome extends StatelessWidget {
         appBar: AppBar(
           title: const Text('E-Class'),
         ),
-        body: const Center(
+        body:  const Center(
             child: Padding(
               padding: EdgeInsets.only(left: 10,right: 10),
               child: Column(
