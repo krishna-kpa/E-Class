@@ -1,6 +1,6 @@
 class Students{
-  Students(this.admissionNo,this.name,this.mail,this.password,this.batchId);
-  String admissionNo;
+  Students(this.id,this.name,this.mail,this.password,this.batchId);
+  String id;
   String name;
   String mail;
   String password;
