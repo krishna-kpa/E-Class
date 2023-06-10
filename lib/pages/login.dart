@@ -54,14 +54,14 @@ class _LoginState extends State<Login> {
       if (student != null) {
         if (student.password == password.text.toString()) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const StudentHome();
+              return  StudentHome(student.id);
             }));
         }
       }
       else if(teacher != null){
           if(teacher.password == password.text.toString()){
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return TeacherHome(userName.text);
+              return TeacherHome(teacher.id);
             }));
         }
       }

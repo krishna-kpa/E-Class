@@ -1,15 +1,15 @@
+import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:e_class/pages/common widgets/home_button.dart';
 
+// ignore: must_be_immutable
 class StudentHome extends StatelessWidget {
-  const StudentHome({super.key});
-
+   StudentHome(this.userId,{super.key});
+  String userId;
   @override
   Widget build(context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('E-Class'),
-        ),
+        appBar: CommonAppBar("E Class", userId, 2, userId),
         body:  const Center(
             child: Padding(
               padding: EdgeInsets.only(left: 10,right: 10),
