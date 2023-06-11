@@ -12,7 +12,7 @@ class Classrooms extends StatelessWidget{
   List<Widget> showSchemes(userId,userType){
     List<Widget> schemsAvailable = [];
     for(var i =0;i<schemeList.length;i++){
-      schemsAvailable.add(SchemeButton(schemeList[i].schemeName,schemeList[i].id,userId,userType));
+      schemsAvailable.add(SchemeButton(schemeList[i].schemeName,schemeList[i].schemeName,userId,userType));
     }
     return schemsAvailable;
   }

@@ -1,5 +1,4 @@
 class Scheme{
-  Scheme(this.id,this.schemeName);
-  int id;
+  Scheme(this.schemeName);
   int schemeName;
 }

@@ -1,29 +1,28 @@
-import 'package:e_class/pages/students/individual_subject.dart';
+import 'package:e_class/data/subjects.dart';
+import 'package:e_class/pages/students/s_subject.dart';
 import 'package:flutter/material.dart';
-import 'package:e_class/data/users.dart';
 
-class TeacherButton extends StatelessWidget {
-  const TeacherButton(this.subjectId,this.subjectName,this.teacherId, {super.key});
-
+class SSubjectButton extends StatelessWidget {
+  const SSubjectButton(this.userId,this.id,this.subjectId,this.teacherId,{super.key});
+  final String userId;
+  final int id;
   final int subjectId;
-  final String subjectName;
   final String teacherId;
   
 
-  void teacherRouter(context,subjectId) {
+  void subjectRouter(context,subjectId,subjectName) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => Subject(subjectId)));
+    MaterialPageRoute(builder: (context) => SSubject(id,subjectName,teacherId,userId)));
   }
 
-  String teacherName(teacherId,teacherList){
-    for(var i = 0; i< teacherList.length;i++){
-      if(teacherList[i].id == teacherId){
-        return teacherList[i].teacherName;
-      }
+  String findSubjectName(subjectId){
+  for(var i=0;i<subjectList.length;i++){
+    if(subjectList[i].id==subjectId){
+      return subjectList[i].subjectName;
     }
-    return 'h';
   }
-
+  return '';
+}
   @override
   Widget build(context) {
     return Padding(
@@ -34,7 +33,7 @@ class TeacherButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => teacherRouter(context,subjectId),
+              onPressed: () => subjectRouter(context,subjectId,findSubjectName(subjectId)),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -45,7 +44,7 @@ class TeacherButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(teacherName(teacherId,teachers),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(findSubjectName(subjectId),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),
