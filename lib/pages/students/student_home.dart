@@ -10,14 +10,14 @@ class StudentHome extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
         appBar: CommonAppBar("E Class", userId, 2, userId),
-        body:  const Center(
+        body:   Center(
             child: Padding(
-              padding: EdgeInsets.only(left: 10,right: 10),
+              padding: const EdgeInsets.only(left: 10,right: 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-              children: [HomeButton("Classrooms"), HomeButton("My Classroom")],
+              children: [HomeButton("Classrooms",userId,2), HomeButton("My Classroom",userId,2)],
                     ),
             )));
   }
