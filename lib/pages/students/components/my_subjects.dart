@@ -1,16 +1,18 @@
 import 'package:e_class/data/subjects.dart';
+import 'package:e_class/pages/students/s_subject.dart';
 import 'package:flutter/material.dart';
 
 class SSubjectButton extends StatelessWidget {
-  const SSubjectButton(this.subjectId,this.teacherId,{super.key});
-
+  const SSubjectButton(this.userId,this.id,this.subjectId,this.teacherId,{super.key});
+  final String userId;
+  final int id;
   final int subjectId;
   final String teacherId;
   
 
   void subjectRouter(context,subjectId,subjectName) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => Text(subjectId.toString()+subjectName)));
+    MaterialPageRoute(builder: (context) => SSubject(id,subjectName,teacherId,userId)));
   }
 
   String findSubjectName(subjectId){
@@ -31,7 +33,7 @@ class SSubjectButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => subjectRouter(context,subjectId,teacherId),
+              onPressed: () => subjectRouter(context,subjectId,findSubjectName(subjectId)),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,

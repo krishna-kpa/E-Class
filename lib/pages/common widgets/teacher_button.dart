@@ -1,6 +1,6 @@
 import 'package:e_class/pages/students/individual_subject.dart';
 import 'package:flutter/material.dart';
-import 'package:e_class/data/teachers.dart';
+import 'package:e_class/data/users.dart';
 
 class TeacherButton extends StatelessWidget {
   const TeacherButton(this.subjectId,this.subjectName,this.teacherId, {super.key});
@@ -45,7 +45,7 @@ class TeacherButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(teacherName(teacherId,teacherList),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(teacherName(teacherId,teachers),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),

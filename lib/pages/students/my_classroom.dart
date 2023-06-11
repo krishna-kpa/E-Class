@@ -21,7 +21,7 @@ class StudentMyClassroom extends StatelessWidget{
     List<Widget> mySubjects =[];
     for(var i =0;i<subjectsCreated.length;i++){
         if(subjectsCreated[i].assignedBatchId==batchId){
-            mySubjects.add(SSubjectButton(subjectsCreated[i].detailsId, subjectsCreated[i].teachersId));
+            mySubjects.add(SSubjectButton(id,subjectsCreated[i].id,subjectsCreated[i].detailsId, subjectsCreated[i].teachersId));
         }
     }
     return mySubjects;
