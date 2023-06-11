@@ -7,7 +7,7 @@ class TeacherButton extends StatelessWidget {
 
   final int subjectId;
   final String subjectName;
-  final int teacherId;
+  final String teacherId;
   
 
   void teacherRouter(context,subjectId) {
@@ -21,7 +21,7 @@ class TeacherButton extends StatelessWidget {
         return teacherList[i].teacherName;
       }
     }
-    return '';
+    return 'h';
   }
 
   @override

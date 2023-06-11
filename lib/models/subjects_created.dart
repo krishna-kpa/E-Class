@@ -4,5 +4,5 @@ class SubjectsCreate{
   int id;
   int detailsId;
   int assignedBatchId;
-  int teachersId;
+  String teachersId;
 }

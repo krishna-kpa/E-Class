@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:e_class/pages/students/teacher_list.dart';
 
 class SubjectButton extends StatelessWidget {
-  const SubjectButton(this.subjectId,this.subjectName, {super.key});
+  const SubjectButton(this.subjectId,this.subjectName,this.userId,this.userType, {super.key});
 
   final int subjectId;
   final String subjectName;
+  final String userId;
+  final int userType;
   
 
-  void subjectRouter(context,subjectId,subjectName) {
+  void subjectRouter(context,subjectId,subjectName,userId,userType) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => TeachersList(subjectId, subjectName)));
+    MaterialPageRoute(builder: (context) => TeachersList(subjectId, subjectName,userId,userType)));
   }
 
   @override
@@ -23,7 +25,7 @@ class SubjectButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => subjectRouter(context,subjectId,subjectName),
+              onPressed: () => subjectRouter(context,subjectId,subjectName,userId,userType),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,

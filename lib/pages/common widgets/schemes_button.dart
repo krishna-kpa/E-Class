@@ -2,14 +2,16 @@ import 'package:e_class/pages/students/semester_list.dart';
 import 'package:flutter/material.dart';
 
 class SchemeButton extends StatelessWidget {
-  const SchemeButton(this.schemeValue,this.schemeId, {super.key});
-
+  const SchemeButton(this.schemeValue,this.schemeId,this.userId,this.userType ,{super.key});
+  
+  final int userType;
   final int schemeValue;
   final int schemeId;
+  final String userId;
 
-  void schemeRouter(context,schemeId) {
+  void schemeRouter(context,schemeId,userId,userType) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => SemesterList(schemeId)));
+    MaterialPageRoute(builder: (context) => SemesterList(schemeId,userId,userType)));
   }
 
   @override
@@ -22,7 +24,7 @@ class SchemeButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => schemeRouter(context,schemeId),
+              onPressed: () => schemeRouter(context,schemeId,userId,userType),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,

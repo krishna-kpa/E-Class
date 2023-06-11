@@ -24,7 +24,7 @@ class HomeButton extends StatelessWidget {
           }));
     } else if (homeOption == 'Classrooms') {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Classrooms()));
+          context, MaterialPageRoute(builder: (context) =>  Classrooms(id,type)));
     }
   }
 
