@@ -1,17 +1,17 @@
 import 'package:e_class/pages/students/subject_list.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SemesterButton extends StatelessWidget {
-  const SemesterButton(this.schemeId,this.sem,this.userId,this.userType, {super.key});
+  SemesterButton(this.schemeId,this.sem,this.user, {super.key});
 
   final int schemeId;
   final int sem;
-  final String userId;
-  final int userType;
+  var user;
 
-  void semesterRouter(context,schemeId,value,userId,userType) {
+  void semesterRouter(context,schemeId,value,user) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => SubjectList(value,schemeId,userId,userType)));
+    MaterialPageRoute(builder: (context) => SubjectList(value,schemeId,user)));
   }
 
   @override
@@ -24,7 +24,7 @@ class SemesterButton extends StatelessWidget {
             width: 150,
             height: 100,
             child: ElevatedButton(
-              onPressed: () => semesterRouter(context,schemeId,sem,userId,userType),
+              onPressed: () => semesterRouter(context,schemeId,sem,user),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -35,7 +35,7 @@ class SemesterButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text("Sem-$sem",style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text("$sem",style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),

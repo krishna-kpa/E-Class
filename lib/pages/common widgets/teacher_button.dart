@@ -1,27 +1,18 @@
 import 'package:e_class/pages/students/individual_subject.dart';
 import 'package:flutter/material.dart';
-import 'package:e_class/data/users.dart';
 
+// ignore: must_be_immutable
 class TeacherButton extends StatelessWidget {
-  const TeacherButton(this.subjectId,this.subjectName,this.teacherId, {super.key});
+  TeacherButton(this.subject,this.subjectName,this.teacher, {super.key});
 
-  final int subjectId;
+  var subject;
   final String subjectName;
-  final String teacherId;
+  var teacher;
   
 
-  void teacherRouter(context,subjectId) {
+  void teacherRouter(context,subject) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => Subject(subjectId)));
-  }
-
-  String teacherName(teacherId,teacherList){
-    for(var i = 0; i< teacherList.length;i++){
-      if(teacherList[i].id == teacherId){
-        return teacherList[i].teacherName;
-      }
-    }
-    return 'h';
+    MaterialPageRoute(builder: (context) => Subject(subject)));
   }
 
   @override
@@ -34,7 +25,7 @@ class TeacherButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => teacherRouter(context,subjectId),
+              onPressed: () => teacherRouter(context,subject),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -45,7 +36,7 @@ class TeacherButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(teacherName(teacherId,teachers),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(teacher,style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),

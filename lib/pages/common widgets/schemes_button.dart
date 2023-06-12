@@ -1,17 +1,16 @@
 import 'package:e_class/pages/students/semester_list.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SchemeButton extends StatelessWidget {
-  const SchemeButton(this.schemeValue,this.schemeId,this.userId,this.userType ,{super.key});
+  SchemeButton(this.scheme,this.user,{super.key});
   
-  final int userType;
-  final int schemeValue;
-  final int schemeId;
-  final String userId;
+  var scheme;
+  var user;
 
-  void schemeRouter(context,schemeId,userId,userType) {
+  void schemeRouter(context,schemeId,user) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => SemesterList(schemeId,userId,userType)));
+    MaterialPageRoute(builder: (context) => SemesterList(schemeId,user)));
   }
 
   @override
@@ -24,7 +23,7 @@ class SchemeButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => schemeRouter(context,schemeId,userId,userType),
+              onPressed: () => schemeRouter(context,scheme["name"],user),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -35,7 +34,7 @@ class SchemeButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(schemeValue.toString(),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(scheme['name'].toString(),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),

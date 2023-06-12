@@ -1,18 +1,19 @@
 import 'package:e_class/pages/students/single_view.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ModuleButton extends StatelessWidget {
-  const ModuleButton(this.value,this.subjectId,this.subjectName,this.heading, {super.key});
+  ModuleButton(this.value,this.subject,this.subjectName,this.heading, {super.key});
 
-  final int subjectId;
+  var subject;
   final String subjectName;
   final int value;
   final String heading;
   
 
-  void moduleRouter(context,subjectId,subjectName,moduleNo) {
+  void moduleRouter(context,subject,moduleNo) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => SingleView(heading, subjectId,moduleNo)));
+    MaterialPageRoute(builder: (context) => SingleView(heading, subject,moduleNo)));
   }
 
   @override
@@ -25,7 +26,7 @@ class ModuleButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => moduleRouter(context,subjectId,subjectName,value),
+              onPressed: () => moduleRouter(context,subject,value),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,

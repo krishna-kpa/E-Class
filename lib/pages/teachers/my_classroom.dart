@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TeacherMyClassroom extends StatelessWidget{
-  const TeacherMyClassroom(this.id,{super.key});
-  final String id;
+  TeacherMyClassroom(this.user,{super.key});
+  var user;
 
   @override
   Widget build(context){
-    return const Scaffold(body: Text("Hello There",),);
+    return  Scaffold(body: Text(user.toString()),);
   }
 }

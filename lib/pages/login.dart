@@ -2,7 +2,7 @@ import 'package:e_class/pages/admin/admin_home.dart';
 import 'package:e_class/pages/students/student_home.dart';
 import 'package:e_class/pages/teachers/teacher_home.dart';
 import 'package:flutter/material.dart';
-import 'package:e_class/data/users.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -20,59 +20,52 @@ class _LoginState extends State<Login> {
   Future<void> validateAndSave(context) async {
     final FormState? form = _formKey.currentState;
     if (form!.validate()) {
-      dynamic student;
-      dynamic teacher;
-      if(userName.text.toUpperCase()=='ADMIN'){
-         if(admin["password"]==password.text.toString()){
-           Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const AdminHome();
-            }));
-         }
-         else{
-           Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const Login();
-            }));
-         }
+      
+      var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+      await db.open();
+      mongo.DbCollection users;
+      users = db.collection("users");
+      print(users);
+      print(userName.text);
+      var v = await users.findOne({"id":userName.text,"password":password.text});
+      db.close();
+      print(v);
+      if(v==null){
+        Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>const Login(),
+              ),
+            );
+      }else if(v['type']==2){
+        Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentHome(v),
+              ),
+            );
+      }else if(v["type"]==1){
+        Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TeacherHome(v),
+              ),
+            );
+      }else if(v["type"]==0){
+        Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminHome(),
+              ),
+            );
       }else{
-        if(userName.text.length==5){
-        for(var i=0;i<teachers.length;i++){
-            if(teachers[i].id.toUpperCase()==userName.text.toUpperCase()){
-            teacher =  teachers[i];
-            break;
-            }
-          }
+        Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>const Login(),
+              ),
+            );
       }
-      else{
-          for(var i=0;i<students.length;i++){
-              if(students[i].id.toUpperCase()==userName.text.toUpperCase()){
-                  student = students[i];
-              }
-          }
-      }
-
-
-      if (student != null) {
-        if (student.password == password.text.toString()) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return  StudentHome(student.id);
-            }));
-        }
-      }
-      else if(teacher != null){
-          if(teacher.password == password.text.toString()){
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return TeacherHome(teacher.id);
-            }));
-        }
-      }
-      else{
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const Login();
-            }));
-        }
-      }
-      }else {
-        print('Form is invalid');
       }
       }
     @override

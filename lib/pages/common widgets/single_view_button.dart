@@ -1,57 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:e_class/data/notes.dart';
-import 'package:e_class/data/assignments.dart';
-import 'package:e_class/data/textbooks.dart';
 
+// ignore: must_be_immutable
 class SingleViewButton extends StatelessWidget {
-  const SingleViewButton(this.subjectId,this.id ,this.value,{super.key});
+  SingleViewButton(this.content,{super.key});
 
-  final int subjectId;
-  final String value;
-  final int id;
-
-  void subjectRouter(context,heading,id) {
-    // ignore: unused_local_variable
-    dynamic data;
-    List collections ;
-    if(heading=='Notes'){
-      collections = notes;
-    }else if(heading=='Textbooks'){
-      collections = textbooks;
-    }else if(heading=='Assignments'){
-      collections = assignments;
-    }else{
-      collections = [1];
-    }
-    for(var i=0;i<collections.length;i++){
-      if(collections[i].id==id){
-        data = collections[i];
-        break;
-      }
-    }
-    Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => const Text("data")));
-  }
-  String nameOfTask(subjectId,heading,id){
-    List collections ;
-    var data;
-    if(heading=='Notes'){
-      collections = notes;
-    }else if(heading=='Textbooks'){
-      collections = textbooks;
-    }else if(heading=='Assignments'){
-      collections = assignments;
-    }else{
-      collections = [1];
-    }
-    for(var i=0;i<collections.length;i++){
-      if(collections[i].id==id){
-        data = collections[i];
-        break;
-      }
-    }
-    return data.name;
-  }
+  var content;
 
   @override
   Widget build(context) {
@@ -63,7 +16,7 @@ class SingleViewButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => subjectRouter(context,value,subjectId),
+              onPressed: () => {},
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -74,7 +27,7 @@ class SingleViewButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(nameOfTask(subjectId,value,id),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(content['name'],style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),

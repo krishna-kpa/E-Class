@@ -12,6 +12,7 @@ dependencies:
   dio: ^5.2.1
   flutter:
     sdk: flutter
+  mongo_dart: ^0.9.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

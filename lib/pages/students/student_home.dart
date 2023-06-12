@@ -4,12 +4,12 @@ import 'package:e_class/pages/common widgets/home_button.dart';
 
 // ignore: must_be_immutable
 class StudentHome extends StatelessWidget {
-   StudentHome(this.userId,{super.key});
-  String userId;
+  StudentHome(this.user,{super.key});
+  var user;
   @override
   Widget build(context) {
     return Scaffold(
-        appBar: CommonAppBar("E Class", userId, 2, userId),
+        appBar: CommonAppBar("E Class", user["name"],user),
         body:   Center(
             child: Padding(
               padding: const EdgeInsets.only(left: 10,right: 10),
@@ -17,7 +17,7 @@ class StudentHome extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-              children: [HomeButton("Classrooms",userId,2), HomeButton("My Classroom",userId,2)],
+              children: [HomeButton("Classrooms",user), HomeButton("My Classroom",user)],
                     ),
             )));
   }

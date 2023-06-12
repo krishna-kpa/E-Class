@@ -1,27 +1,29 @@
-import 'package:e_class/data/subjects.dart';
 import 'package:e_class/pages/students/s_subject.dart';
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
+// ignore: must_be_immutable
 class SSubjectButton extends StatelessWidget {
-  const SSubjectButton(this.userId,this.id,this.subjectId,this.teacherId,{super.key});
-  final String userId;
-  final int id;
-  final int subjectId;
-  final String teacherId;
+  SSubjectButton(this.user,this.subject,{super.key});
+  var user;
+  var subject;
   
 
-  void subjectRouter(context,subjectId,subjectName) {
+  void subjectRouter(context,subject,user) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => SSubject(id,subjectName,teacherId,userId)));
+    MaterialPageRoute(builder: (context) => SSubject(subject,user)));
   }
 
-  String findSubjectName(subjectId){
-  for(var i=0;i<subjectList.length;i++){
-    if(subjectList[i].id==subjectId){
-      return subjectList[i].subjectName;
-    }
-  }
-  return '';
+  Future<String> findSubjectName(subject) async{
+      var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+      await db.open();
+      mongo.DbCollection subjects;
+      subjects = db.collection("subjects");
+      print(subjects);
+      var v = await subjects.findOne({'_id':subject['detailsId']});
+      print(v);
+      db.close();
+      return v!['subjectName'];
 }
   @override
   Widget build(context) {
@@ -33,7 +35,7 @@ class SSubjectButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => subjectRouter(context,subjectId,findSubjectName(subjectId)),
+              onPressed: () => subjectRouter(context,subject,user),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -44,9 +46,19 @@ class SSubjectButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(findSubjectName(subjectId),style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
-              
-            )),
+              child:FutureBuilder<String>(
+      future: findSubjectName(subject),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Show a loading indicator while waiting for the future to complete
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}'); // Show an error message if the future throws an error
+        } else {
+          return Text(snapshot.data ?? 'No data',style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)); // Display the data once the future completes
+        }
+      },
+      )
+    )),
       ),
     );
   }

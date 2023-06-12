@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:e_class/pages/students/teacher_list.dart';
 
+// ignore: must_be_immutable
 class SubjectButton extends StatelessWidget {
-  const SubjectButton(this.subjectId,this.subjectName,this.userId,this.userType, {super.key});
+  SubjectButton(this.subject,this.user, {super.key});
 
-  final int subjectId;
-  final String subjectName;
-  final String userId;
-  final int userType;
+  var subject;
+  var user;
   
 
-  void subjectRouter(context,subjectId,subjectName,userId,userType) {
+  void subjectRouter(context,subject,user) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => TeachersList(subjectId, subjectName,userId,userType)));
+    MaterialPageRoute(builder: (context) => TeachersList(subject,user)));
   }
 
   @override
@@ -25,7 +24,7 @@ class SubjectButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => subjectRouter(context,subjectId,subjectName,userId,userType),
+              onPressed: () => subjectRouter(context,subject,user),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,
@@ -36,7 +35,7 @@ class SubjectButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(subjectName,style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(subject['subjectName'],style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
               
             )),
       ),

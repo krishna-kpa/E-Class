@@ -5,26 +5,26 @@ import 'package:e_class/pages/students/my_classroom.dart';
 import 'package:e_class/pages/students/classrooms.dart';
 
 
+// ignore: must_be_immutable
 class HomeButton extends StatelessWidget {
-  const HomeButton(this.homeOption,this.id,this.type, {super.key});
+  HomeButton(this.homeOption,this.user, {super.key});
   final String homeOption;
-  final String id;
-  final int type;
+  var user;
   Future<void> homeRouter(context, homeOption,id,type) async {
     if (homeOption == 'My Classroom') {
       Navigator.push(context,
           MaterialPageRoute(builder: (context){
             if(type==1){
-              return TeacherMyClassroom(id);
+              return TeacherMyClassroom(user);
             }else if(type==2){
-              return StudentMyClassroom(id);
+              return StudentMyClassroom(user);
             }else{
               return const Login();
             }
           }));
     } else if (homeOption == 'Classrooms') {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) =>  Classrooms(id,type)));
+          context, MaterialPageRoute(builder: (context) =>  Classrooms(user)));
     }
   }
 
@@ -36,7 +36,7 @@ class HomeButton extends StatelessWidget {
           width: double.infinity,
           height: 100,
           child: ElevatedButton(
-            onPressed: () => homeRouter(context, homeOption,id,type),
+            onPressed: () => homeRouter(context, homeOption,user['id'],user['type']),
             style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,

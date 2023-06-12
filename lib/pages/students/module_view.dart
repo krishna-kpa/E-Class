@@ -1,52 +1,56 @@
-import 'package:e_class/data/subjects.dart';
 import 'package:e_class/pages/common widgets/module_button.dart';
 import 'package:flutter/material.dart';
-import 'package:e_class/data/subjects_created.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 // ignore: must_be_immutable
 class ModuleList extends StatelessWidget{
-  ModuleList(this.value,this.subjectId,{super.key});
+  ModuleList(this.value,this.subject,{super.key});
 
   String value;
-  int subjectId;
+  var subject;
 
-  List<Widget> showModules(value,subjectId){
-    List<Widget> availableModules = [];
-    int detailsId=0;
-    int noOfModules=0;
-    String subjectName ='';
-    for(var i =0;i<subjectsCreated.length;i++){
-      if(subjectsCreated[i].id==subjectId){
-        detailsId = subjectsCreated[i].detailsId;
+  Future<List<Widget>> showModules(subject,value) async {
+      List<Widget> availableModules=[];
+      var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+      await db.open();
+      mongo.DbCollection details;
+      details = db.collection("subjects");
+      print(details);
+      var v = await details.findOne({'_id':subject['detailsId']});
+      print(v);
+      db.close();
+      for(var i=0;i<v!['noOfModules'];i++){
+        availableModules.add(ModuleButton(i+1,subject, v['subjectName'],value));
       }
-    }
-    for(var i =0;i<subjectList.length;i++){
-      if(subjectList[i].id==detailsId){
-        noOfModules = subjectList[i].noOfModules;
-        subjectName = subjectList[i].subjectName;
-      }
-    }
-    for(var i =0;i<noOfModules;i++){
-      availableModules.add(ModuleButton(i+1,subjectId, subjectName,value));
-    }
-
-    return availableModules;
+      return availableModules;
   }
-
   @override
   Widget build(context){
-    return  SizedBox(
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: Colors.white
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [const SizedBox(height: 100,width: 10,),...showModules(value,subjectId)],
-            ),),
-      ),
+    return  Scaffold(
+      body: SizedBox(
+        child: Center(
+            child:Container(
+                  child: FutureBuilder<List<Widget>>(
+                  future: showModules(subject,value),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return snapshot.data![index];
+                        },
+                      );
+                    } else {
+                      return const Text('No data');
+                    }
+                  },
+                          ),
+                ),),
+          ),
     );
   }
 }
