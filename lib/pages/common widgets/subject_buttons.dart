@@ -35,7 +35,7 @@ class SubjectButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)
                 )
               ),
-              child: Text(subject['subjectName'],style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)),
+              child: Text(subject['subjectName'],style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20),textAlign: TextAlign.center,),
               
             )),
       ),
