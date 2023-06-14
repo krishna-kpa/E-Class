@@ -26,8 +26,7 @@ dev_dependencies:
 flutter:
 
   assets:
-    - assets/images/logo.png
-    - assets/images/bg.png
+    - assets/images/
   
   fonts:
     - family: Gotu
