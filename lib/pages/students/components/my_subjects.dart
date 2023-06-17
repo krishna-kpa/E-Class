@@ -18,12 +18,15 @@ class SSubjectButton extends StatelessWidget {
       var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
       await db.open();
       mongo.DbCollection subjects;
+      mongo.DbCollection teachers;
       subjects = db.collection("subjects");
+      teachers = db.collection('users');
       print(subjects);
       var v = await subjects.findOne({'_id':subject['detailsId']});
+      var teacher = await teachers.findOne({'id':subject['teacherId']});
       print(v);
       db.close();
-      return v!['subjectName'];
+      return v!['subjectName']+" - "+teacher!['name'];
 }
   @override
   Widget build(context) {
@@ -44,7 +47,7 @@ class SSubjectButton extends StatelessWidget {
                 backgroundColor:const Color.fromARGB(154, 255, 240, 182),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)
-                )
+                ),
               ),
               child:FutureBuilder<String>(
       future: findSubjectName(subject),
@@ -54,7 +57,7 @@ class SSubjectButton extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}'); // Show an error message if the future throws an error
         } else {
-          return Text(snapshot.data ?? 'No data',style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,)); // Display the data once the future completes
+          return Text(snapshot.data ?? 'No data',style: const TextStyle(color:Color.fromRGBO(0, 0, 0, 1),fontSize: 20,),textAlign: TextAlign.center,); // Display the data once the future completes
         }
       },
       )

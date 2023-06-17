@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class TeacherButton extends StatelessWidget {
-  TeacherButton(this.subject,this.subjectName,this.teacher, {super.key});
+  TeacherButton(this.subject,this.subjectName,this.teacher,this.user ,{super.key});
 
   var subject;
   final String subjectName;
   var teacher;
+  var user;
   
 
-  void teacherRouter(context,subject) {
+  void teacherRouter(context,subject,teacher) {
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => Subject(subject)));
+    MaterialPageRoute(builder: (context) => Subject(subject,user)));
   }
 
   @override
@@ -25,7 +26,7 @@ class TeacherButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () => teacherRouter(context,subject),
+              onPressed: () => teacherRouter(context,subject,teacher),
               style: ElevatedButton.styleFrom(
                 side: const BorderSide(
                   width: 1,

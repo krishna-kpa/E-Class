@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Subject extends StatelessWidget {
-   Subject(this.subject,{super.key});
+   Subject(this.subject,this.user,{super.key});
    var subject;
+   var user;
    List<Widget> showOptions(subject){
-    List<String> options = ["Notes","Textbooks","Assignments","Chatroom"];
+    List<String> options = ["Notes","Textbooks"];
     List<Widget> availableOptions = [];
 
     for(var i=0;i<options.length;i++){
-      availableOptions.add(IndividualButton(subject, options[i]));
+      availableOptions.add(IndividualButton(subject, options[i],user));
     }
     return availableOptions;
 

@@ -1,90 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'dart:io';
 
-void main() {
-  runApp(MyApp());
-}
+class FileViewPage extends StatefulWidget {
+  final String fileId;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PDF Viewer Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('PDF Viewer'),
-        ),
-        body: Center(
-          child: FutureBuilder<String>(
-            future: fetchPDFURL(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                print(snapshot.error);
-                return Text('Error fetching PDF URL: ${snapshot.error}');
-                
-              } else if (snapshot.hasData) {
-                final pdfURL = snapshot.data!;
-                return PDFViewerFromURL(pdfURL: pdfURL);
-              } else {
-                return Text('No PDF URL found');
-              }
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<String> fetchPDFURL() async {
-    final db = await mongo.Db.create('mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority');
-    await db.open();
-
-    final collection = db.collection('notes');
-    final document = await collection.findOne({'_id':'6487400fad25cb0d7f62769e'});
-    final pdfURL = document?['noteLink'];
-    print(pdfURL.toString());
-
-    await db.close();
-
-    return pdfURL ?? '';
-  }
-}
-
-class PDFViewerFromURL extends StatefulWidget {
-  final String pdfURL;
-
-  PDFViewerFromURL({required this.pdfURL});
+  FileViewPage(this.fileId);
 
   @override
-  _PDFViewerFromURLState createState() => _PDFViewerFromURLState();
+  _FileViewPageState createState() => _FileViewPageState();
 }
 
-class _PDFViewerFromURLState extends State<PDFViewerFromURL> {
+class _FileViewPageState extends State<FileViewPage> {
+  Dio dio = Dio();
   bool _isLoading = true;
+  String _filePath = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFile();
+  }
+
+  Future<void> _fetchFile() async {
+    try {
+      Response response = await dio.get(
+        'https://e-class-file-upload.onrender.com/files/${widget.fileId}',
+        options: Options(responseType: ResponseType.bytes),
+      );
+      print(response.data);
+      print(response.headers);
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}.pdf'; // Generate a unique file name
+      final filePath = '${appDir.path}/$fileName';
+
+      await File(filePath).writeAsBytes(response.data);
+
+      setState(() {
+        _isLoading = false;
+        _filePath = filePath;
+        print("the path: $_filePath");
+      });
+    } catch (error) {
+      if (error is DioError) {
+        print("DioError: ${error.response?.data}");
+      } else {
+        print("Error: $error");
+      }
+      setState(() {
+        _isLoading = false;
+        _filePath = '';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        PDFView(
-          filePath: widget.pdfURL,
-          onViewCreated: (PDFViewController controller) {
-            setState(() {
-              _isLoading = false;
-            });
-          },
-        ),
-        if (_isLoading)
-          Center(
-            child: CircularProgressIndicator(),
-          ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const  Text('File View'),
+        backgroundColor:  const Color.fromARGB(255, 49, 30, 2),
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _filePath.isNotEmpty
+              ? PDFView(
+                  filePath: _filePath,
+                )
+              : const Center(
+                  child: Text('Failed to fetch file.'),
+                ),
     );
   }
 }

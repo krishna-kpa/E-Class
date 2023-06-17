@@ -8,12 +8,12 @@ class SSubject extends StatelessWidget {
   var subject;
   var user;
 
-   List<Widget> showOptions(subject){
+   List<Widget> showOptions(subject,user){
     List<String> options = ["Notes","Textbooks","Assignments","Chatroom"];
     List<Widget> availableOptions = [];
 
     for(var i=0;i<options.length;i++){
-      availableOptions.add(IndividualButton(subject, options[i]));
+      availableOptions.add(IndividualButton(subject, options[i],user));
     }
     return availableOptions;
 
@@ -28,12 +28,14 @@ class SSubject extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.white
         ),
-        child: SingleChildScrollView(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [const SizedBox(height: 300,width: 10,),...showOptions(subject)],
-            ),),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [...showOptions(subject,user)],
+              ),),
+        ),
       ),
     )
     );

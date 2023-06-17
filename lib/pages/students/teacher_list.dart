@@ -10,7 +10,7 @@ class TeachersList extends StatelessWidget{
   var subject;
   var user;
 
-  Future<List<Widget>> showTeachers(subject) async {
+  Future<List<Widget>> showTeachers(subject,user) async {
       List<Widget> availableTeachers=[];
       var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
       await db.open();
@@ -21,7 +21,7 @@ class TeachersList extends StatelessWidget{
       print(v);
       db.close();
       for(var i=0;i<v.length;i++){
-        availableTeachers.add(TeacherButton(v[i], subject['subjectName'], v[i]['teacherId']));
+        availableTeachers.add(TeacherButton(v[i], subject['subjectName'], v[i]['teacherId'],user));
       }
       return availableTeachers;
   }
@@ -40,7 +40,7 @@ class TeachersList extends StatelessWidget{
             ),
             child: Container(
                 child: FutureBuilder<List<Widget>>(
-                future: showTeachers(subject),
+                future: showTeachers(subject,user),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();

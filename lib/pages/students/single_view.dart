@@ -4,32 +4,38 @@ import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 // ignore: must_be_immutable
 class SingleView extends StatelessWidget {
-  SingleView(this.heading, this.subject, this.moduleNo, {super.key});
+  SingleView(this.heading, this.subject, this.moduleNo,this.user, {super.key});
   final String heading;
   var subject;
   final int moduleNo;
+  var user;
 
-  Future<List<Widget>> showContent(subject, value,moduleNo) async {
+  Future<List<Widget>> showContent(subject, value,moduleNo,user) async {
     List<Widget> availableContents = [];
+    String type ='';
     var db = await mongo.Db.create(
         "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
     await db.open();
     mongo.DbCollection contents;
     if (value == 'Notes') {
       contents = db.collection('notes');
+      type='notes';
     } else if (value == 'Textbooks') {
       contents = db.collection('textbooks');
+      type='textbooks';
     } else if (value == 'Assignments') {
       contents = db.collection('assignment');
+      type = 'assignments';
     } else {
       contents = db.collection('chatrooms');
+      type = 'chatrooms';
     }
     print(contents);
     var v = await contents.find({'subjectId': subject['_id'],'moduleNo':moduleNo}).toList();
     print(v);
     db.close();
     for (var i = 0; i < v.length; i++) {
-      availableContents.add(SingleViewButton(v[i]));
+      availableContents.add(SingleViewButton(v[i],type,user));
     }
     return availableContents;
   }
@@ -39,13 +45,14 @@ class SingleView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(heading),
+          backgroundColor: const Color.fromARGB(255, 49, 30, 2),
         ),
         body: Center(
             child: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child:  Container(
               child: FutureBuilder<List<Widget>>(
-                future: showContent(subject, heading,moduleNo),
+                future: showContent(subject, heading,moduleNo,user),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
