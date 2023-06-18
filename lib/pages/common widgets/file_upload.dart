@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
+// ignore: must_be_immutable
 class FileUploadPage extends StatefulWidget {
   FileUploadPage(this.assignment, this.user, {Key? key})
       : super(key: key);
