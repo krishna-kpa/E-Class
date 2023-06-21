@@ -1,5 +1,5 @@
 import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
-import 'package:e_class/pages/students/components/my_subjects.dart';
+import 'package:e_class/pages/teachers/my_subjects.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
@@ -20,7 +20,7 @@ class TeacherMyClassroom extends StatelessWidget {
     print(v);
     db.close();
     for (var i = 0; i < v.length; i++) {
-      availableSubject.add(SSubjectButton(user, v[i]));
+      availableSubject.add(TSubjectButton(user, v[i]));
     }
     return availableSubject;
   }
