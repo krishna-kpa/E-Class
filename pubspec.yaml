@@ -33,6 +33,11 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/bg.png
+    - assets/images/student.png
+    - assets/images/report.png
+    - assets/images/teacher.png
+    - assets/images/batch.png
+    - assets/images/course.png
   
   fonts:
     - family: Gotu
