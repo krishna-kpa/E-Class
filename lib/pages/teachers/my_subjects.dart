@@ -1,4 +1,3 @@
-import 'package:e_class/pages/students/s_subject.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
@@ -18,7 +17,6 @@ class TSubjectButton extends StatelessWidget {
       var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
       await db.open();
       mongo.DbCollection subjects;
-      mongo.DbCollection teachers;
       subjects = db.collection("subjects");
       print(subjects);
       var v = await subjects.findOne({'_id':subject['detailsId']});
