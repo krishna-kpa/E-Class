@@ -1,3 +1,4 @@
+import 'package:e_class/pages/teachers/assignment_view.dart';
 import 'package:e_class/pages/teachers/file_view.dart';
 //import 'package:e_class/pages/teachers/assignment_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class SingleViewButton extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Text("Assignment")), // create assignment upload and view page
+            builder: (context) => AssignmentView(content, user)), // create assignment upload and view page
       );
     } else {
       print(content);
