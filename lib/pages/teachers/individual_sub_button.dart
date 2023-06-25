@@ -1,4 +1,3 @@
-import 'package:e_class/pages/teachers/fileupload_text.dart';
 import 'package:e_class/pages/teachers/single_view.dart';
 import 'package:e_class/pages/teachers/student_list.dart';
 import 'package:e_class/pages/teachers/module_view.dart';
