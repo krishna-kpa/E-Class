@@ -2,6 +2,7 @@ import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
+// ignore: must_be_immutable
 class AddSubject extends StatefulWidget {
   var user;
 
