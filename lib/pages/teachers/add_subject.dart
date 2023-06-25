@@ -2,22 +2,94 @@ import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
-// ignore: must_be_immutable
 class AddSubject extends StatefulWidget {
   var user;
 
   AddSubject(this.user, {Key? key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddSubjectState createState() => _AddSubjectState();
 }
 
 class _AddSubjectState extends State<AddSubject> {
-  String? selectedBatch;
-  int? selectedValue;
-  String? selectedSubject;
+  int? selectedScheme;
   int? selectedSemester;
+  String? selectedSubject;
+  String? selectedBatch;
+
+  Future<List<DropdownMenuItem<int>>> showSchemeIds() async {
+    List<DropdownMenuItem<int>> schemeIdWidgets = [];
+
+    var db = await mongo.Db.create(
+        "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+    await db.open();
+
+    mongo.DbCollection schemesCollection = db.collection("schemes");
+    var schemes = await schemesCollection.find().toList();
+
+    db.close();
+
+    for (var scheme in schemes) {
+      int schemeId = scheme['name'];
+
+      schemeIdWidgets.add(
+        DropdownMenuItem(
+          value: schemeId,
+          child: Text(
+            schemeId.toString(),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return schemeIdWidgets;
+  }
+
+  Future<List<DropdownMenuItem<String>>> showSubjectNames() async {
+    List<DropdownMenuItem<String>> subjectNameWidgets = [];
+
+    if (selectedSemester == null) {
+      return subjectNameWidgets;
+    }
+
+    var db = await mongo.Db.create(
+        "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+    await db.open();
+
+    mongo.DbCollection subjectsCollection = db.collection("subjects");
+    var subjects = await subjectsCollection
+        .find(
+          mongo.where
+              .eq("semester", selectedSemester)
+              .eq("schemeId", selectedScheme),
+        )
+        .toList();
+
+    db.close();
+
+    for (var subject in subjects) {
+      String subjectName = subject['subjectName'];
+
+      subjectNameWidgets.add(
+        DropdownMenuItem(
+          value: subjectName,
+          child: Text(
+            subjectName,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return subjectNameWidgets;
+  }
 
   Future<List<DropdownMenuItem<String>>> showBatchNames() async {
     List<DropdownMenuItem<String>> batchNameWidgets = [];
@@ -51,64 +123,9 @@ class _AddSubjectState extends State<AddSubject> {
     return batchNameWidgets;
   }
 
-  Future<List<DropdownMenuItem<String>>> showSubjectNames() async {
-    List<DropdownMenuItem<String>> subjectNameWidgets = [];
-
-    if (selectedSemester == null) {
-      return subjectNameWidgets;
-    }
-
-    var db = await mongo.Db.create(
-        "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
-    await db.open();
-
-    mongo.DbCollection subjectsCollection = db.collection("subjects");
-    var subjects = await subjectsCollection
-        .find(
-          mongo.where.eq("semester", selectedSemester),
-        )
-        .toList();
-
-    db.close();
-
-    for (var subject in subjects) {
-      String subjectName = subject['subjectName'];
-
-      subjectNameWidgets.add(
-        DropdownMenuItem(
-          value: subjectName,
-          child: Text(
-            subjectName,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-            ),
-          ),
-        ),
-      );
-    }
-
-    return subjectNameWidgets;
-  }
-
-  List<DropdownMenuItem<int>> generateDropdownItems() {
-    return List<DropdownMenuItem<int>>.generate(
-      8,
-      (index) => DropdownMenuItem<int>(
-        value: index + 1,
-        child: Text(
-          (index + 1).toString(),
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 16.0,
-          ),
-        ),
-      ),
-    );
-  }
-
   void submitData() async {
-    if (selectedBatch != null &&
+    if (selectedScheme != null &&
+        selectedBatch != null &&
         selectedSemester != null &&
         selectedSubject != null) {
       var db = await mongo.Db.create(
@@ -123,6 +140,7 @@ class _AddSubjectState extends State<AddSubject> {
 
       if (subject != null && subject['id'] != null) {
         await subjectCreatedCollection.insert({
+          "idenclass": null,
           "id": subject['id'],
           "detailsId": subject['_id'],
           "assignedBatchId": selectedBatch,
@@ -157,26 +175,24 @@ class _AddSubjectState extends State<AddSubject> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 20.0),
-              FutureBuilder<List<DropdownMenuItem<String>>>(
-                future: showBatchNames(),
+              FutureBuilder<List<DropdownMenuItem<int>>>(
+                future: showSchemeIds(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.hasData) {
-                    return DropdownButton<String>(
-                      value: selectedBatch,
+                    return DropdownButton<int>(
+                      value: selectedScheme,
                       items: snapshot.data,
-                      onChanged: (String? value) {
+                      onChanged: (int? value) {
                         setState(() {
-                          selectedBatch = value;
-                          selectedSubject = null;
-                          selectedSemester = null;
+                          selectedScheme = value;
                         });
                       },
                       padding: const EdgeInsets.only(left: 20.0),
-                      hint: const Text('Assigned Batch'),
+                      hint: const Text('Scheme Year'),
                       isExpanded: true,
                       itemHeight: null,
                     );
@@ -187,12 +203,11 @@ class _AddSubjectState extends State<AddSubject> {
               ),
               const SizedBox(height: 20.0),
               DropdownButton<int>(
-                value: selectedValue,
+                value: selectedSemester,
                 items: generateDropdownItems(),
                 onChanged: (int? value) {
                   setState(() {
-                    selectedValue = value;
-                    selectedSemester = value!;
+                    selectedSemester = value;
                     selectedSubject = null;
                   });
                 },
@@ -219,7 +234,34 @@ class _AddSubjectState extends State<AddSubject> {
                         });
                       },
                       padding: const EdgeInsets.only(left: 20.0),
-                      hint: const Text('Subjects'),
+                      hint: const Text('Subject Name'),
+                      isExpanded: true,
+                      itemHeight: null,
+                    );
+                  } else {
+                    return const Text('No data');
+                  }
+                },
+              ),
+              const SizedBox(height: 20.0),
+              FutureBuilder<List<DropdownMenuItem<String>>>(
+                future: showBatchNames(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    return DropdownButton<String>(
+                      value: selectedBatch,
+                      items: snapshot.data,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedBatch = value;
+                        });
+                      },
+                      padding: const EdgeInsets.only(left: 20.0),
+                      hint: const Text('Batch'),
                       isExpanded: true,
                       itemHeight: null,
                     );
@@ -238,5 +280,26 @@ class _AddSubjectState extends State<AddSubject> {
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem<int>> generateDropdownItems() {
+    List<DropdownMenuItem<int>> semesterWidgets = [];
+
+    for (int i = 1; i <= 8; i++) {
+      semesterWidgets.add(
+        DropdownMenuItem(
+          value: i,
+          child: Text(
+            'Semester $i',
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return semesterWidgets;
   }
 }
