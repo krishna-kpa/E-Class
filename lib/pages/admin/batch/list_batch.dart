@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:e_class/pages/admin/batch/batch_add.dart';
 import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +34,10 @@ class _BatchListState extends State<BatchList> {
 
       batchNameWidgets.add(
         Container(
-          margin: EdgeInsets.all(5.0),
-          padding: EdgeInsets.all(6.0),
+          margin: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(6.0),
           decoration: BoxDecoration(
-            color: Color.fromARGB(154, 255, 240, 182),
+            color: const Color.fromARGB(154, 255, 240, 182),
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
               color: Colors.brown,
@@ -47,7 +49,7 @@ class _BatchListState extends State<BatchList> {
               Expanded(
                 child: Text(
                   '$batchYear',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
                   ),
@@ -57,7 +59,7 @@ class _BatchListState extends State<BatchList> {
                 onPressed: () {
                   deleteBatch(batchYear);
                 },
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
               ),
             ],
           ),
@@ -73,15 +75,47 @@ class _BatchListState extends State<BatchList> {
         "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
     await db.open();
 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Batch'),
+          content:
+              Text('Are you sure you want to delete the batch $batchYear?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await deleteBatchData(batchYear); // Delete the batch
+                Navigator.pop(context); // Close the dialog
+                await reloadData(); // Reload the page after deleting the batch
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    db.close();
+  }
+
+  Future<void> deleteBatchData(String batchYear) async {
+    var db = await mongo.Db.create(
+        "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+    await db.open();
+
     mongo.DbCollection batchesCollection = db.collection("batches");
     mongo.DbCollection usersCollection = db.collection("users");
     await usersCollection.remove(mongo.where.eq('batchId', batchYear));
     await batchesCollection.remove(mongo.where.eq('batchYear', batchYear));
 
     db.close();
-
-    // Reload the page after deleting the batch
-    await reloadData();
   }
 
   Future<void> reloadData() async {
@@ -125,7 +159,7 @@ class _BatchListState extends State<BatchList> {
           // Reload the page after returning from CreateBatch
           await reloadData();
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

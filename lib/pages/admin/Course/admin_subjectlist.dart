@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -34,7 +36,7 @@ class _AdminSubjectListState extends State<AdminSubjectList> {
 
       subjectNameWidgets.add(
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0),
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
           child: SizedBox(
             width: 150,
             height: 100,
@@ -44,7 +46,7 @@ class _AdminSubjectListState extends State<AdminSubjectList> {
                   width: 1,
                   color: Color.fromARGB(255, 96, 49, 49),
                 ),
-                backgroundColor: Color.fromARGB(154, 255, 240, 182),
+                backgroundColor: const Color.fromARGB(154, 255, 240, 182),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
@@ -67,13 +69,13 @@ class _AdminSubjectListState extends State<AdminSubjectList> {
                       onPressed: () {
                         deleteSubject(subjectName, subId);
                       },
-                      icon: Icon(Icons.delete, color: Colors.black),
+                      icon: const Icon(Icons.delete, color: Colors.black),
                     ),
                   ),
                   Center(
                     child: Text(
                       '$subjectName',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 20.0,
                       ),
@@ -95,6 +97,42 @@ class _AdminSubjectListState extends State<AdminSubjectList> {
         "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
     await db.open();
 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Subject'),
+          content:
+              Text('Are you sure you want to delete the subject $subjectName?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await deleteSubjectData(
+                    subjectName, subId); // Delete the subject
+                Navigator.pop(context); // Close the dialog
+                await reloadData(); // Reload the page after deleting the subject
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    db.close();
+  }
+
+  Future<void> deleteSubjectData(String subjectName, subId) async {
+    var db = await mongo.Db.create(
+        "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+    await db.open();
+
     mongo.DbCollection subjectsCollection = db.collection("subjects");
     mongo.DbCollection subjects_createdCollection =
         db.collection("subjects_created");
@@ -102,9 +140,6 @@ class _AdminSubjectListState extends State<AdminSubjectList> {
     await subjects_createdCollection.remove(mongo.where.eq('id', subId));
 
     db.close();
-
-    // Reload the page after deleting the batch
-    await reloadData();
   }
 
   Future<void> reloadData() async {
@@ -149,7 +184,7 @@ class _AdminSubjectListState extends State<AdminSubjectList> {
           // Reload the page after returning from CreateBatch
           await reloadData();
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

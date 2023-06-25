@@ -66,9 +66,8 @@ class _TeacherListState extends State<TeacherList> {
                   IconButton(
                     icon: Icon(Icons.delete),
                     color: Colors.black,
-                    onPressed: () async {
-                      // Delete the teacher from the database
-                      await deleteTeacher(teacherId);
+                    onPressed: () {
+                      showDeleteConfirmationDialog(teacherId);
                     },
                   ),
                 ],
@@ -98,6 +97,35 @@ class _TeacherListState extends State<TeacherList> {
 
     // Reload the page after deleting the teacher
     await reloadData();
+  }
+
+  Future<void> showDeleteConfirmationDialog(String teacherId) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Teacher'),
+          content: Text('Are you sure you want to delete this teacher?'),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () async {
+                // Delete the teacher
+                await deleteTeacher(teacherId);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

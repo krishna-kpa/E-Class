@@ -1,5 +1,7 @@
 import 'package:e_class/pages/students/module_view.dart';
+import 'package:e_class/pages/students/single_view.dart';
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 // ignore: must_be_immutable
 class IndividualButton extends StatelessWidget {
@@ -10,11 +12,25 @@ class IndividualButton extends StatelessWidget {
   var user;
   
 
-  void subjectRouter(context,value,subjectId,user) {
+  void subjectRouter(context,value,subjectId,user) async {
     if(value=='Chatroom'){
     Navigator.push(context, 
     MaterialPageRoute(builder: (context) => ModuleList(value, subject,user)));
-    }else{
+    }
+    else if(value=='Textbooks'){
+      
+      var db = await mongo.Db.create("mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+      await db.open();
+      mongo.DbCollection details;
+      details = db.collection("subjects");
+      print(details);
+      var v = await details.findOne({'_id':subject['detailsId']});
+      print(v);
+      db.close();
+    Navigator.push(context, 
+    MaterialPageRoute(builder: (context) => SingleView("Textbooks", subject, 0, user)));
+    }
+    else{
     Navigator.push(context, 
     MaterialPageRoute(builder: (context) => ModuleList(value, subject,user)));
     }

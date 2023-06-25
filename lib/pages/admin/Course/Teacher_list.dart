@@ -71,7 +71,7 @@ class _TeachersState extends State<Teachers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppBar('Batch Names', ' ', widget.user),
+      appBar: CommonAppBar('Teacher List', ' ', widget.user),
       body: Center(
         child: FutureBuilder<List<Widget>>(
           future: showTeacherNames(),

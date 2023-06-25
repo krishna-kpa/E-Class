@@ -45,6 +45,7 @@ class _FileViewPageState extends State<FileViewPage> {
         print("the path: $_filePath");
       });
     } catch (error) {
+      // ignore: deprecated_member_use
       if (error is DioError) {
         print("DioError: ${error.response?.data}");
       } else {

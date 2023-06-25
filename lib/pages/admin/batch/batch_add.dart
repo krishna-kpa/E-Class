@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:e_class/pages/common widgets/page_app_bar.dart';
@@ -30,14 +32,14 @@ class _CreateBatchState extends State<CreateBatch> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
+            title: const Text('Error'),
             content: Text('Batch with year $batchYear already exists.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -46,7 +48,9 @@ class _CreateBatchState extends State<CreateBatch> {
     } else {
       // Insert the batch document into the collection
       await batchesCollection.insertOne({"batchYear": batchYear});
-
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Batch Added')));
+      Navigator.pop(context);
       // Close the database connection
       db.close().then((value) => Navigator.pop(context));
 
@@ -64,9 +68,9 @@ class _CreateBatchState extends State<CreateBatch> {
           children: [
             TextField(
               controller: batchYearController,
-              decoration: InputDecoration(labelText: 'Batch Year'),
+              decoration: const InputDecoration(labelText: 'Batch Year'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 saveBatch(batchYearController.text);

@@ -4,6 +4,7 @@ import 'Teacher/tr_list.dart';
 import 'batch/list_batch.dart';
 import 'Course/scheme_list.dart';
 import 'Stu/stu_batchwise.dart';
+import 'package:e_class/pages/admin/admin_Complaint.dart';
 
 class Navbutton extends StatelessWidget {
   final String name;
@@ -173,7 +174,10 @@ class AdminHome extends StatelessWidget {
               name: 'Complaints',
               image: const AssetImage('assets/images/report.png'),
               onPressed: () {
-                // Action for rectangle button
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Complaint(user)),
+                );
               },
             ),
           ),

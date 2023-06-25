@@ -16,8 +16,7 @@ class SingleViewButton extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => FileViewPage(
-                content['id'], user)), // create assignment upload and view page
+            builder: (context) => Text("Assignment")), // create assignment upload and view page
       );
     } else {
       print(content);

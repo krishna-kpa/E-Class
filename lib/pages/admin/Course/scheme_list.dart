@@ -1,8 +1,8 @@
-import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:e_class/pages/admin/Course/scheme_add.dart';
 import 'admin_semesterlist.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:e_class/pages/common%20widgets/page_app_bar.dart';
 
 class SchemeList extends StatefulWidget {
   final scheme;
@@ -16,7 +16,7 @@ class SchemeList extends StatefulWidget {
 
 class _SchemeListState extends State<SchemeList> {
   Future<List<Widget>> showScheme() async {
-    List<Widget> schemeNameWdigets = [];
+    List<Widget> schemeNameWidgets = [];
 
     var db = await mongo.Db.create(
         "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
@@ -27,58 +27,104 @@ class _SchemeListState extends State<SchemeList> {
 
     db.close();
 
-    for (var Scheme in schemes) {
-      int schemeyear = Scheme['name'];
+    for (var scheme in schemes) {
+      int schemeYear = scheme['name'];
 
-      schemeNameWdigets.add(
+      schemeNameWidgets.add(
         Container(
           margin: const EdgeInsets.all(5.0),
           padding: const EdgeInsets.all(6.0),
-          child: SizedBox(
-            width: 150,
-            height: 100,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        AdminSemesterList(schemeyear, widget.user),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                side: const BorderSide(
-                  width: 1,
-                  color: Color.fromARGB(255, 96, 49, 49),
-                ),
-                backgroundColor: const Color.fromARGB(154, 255, 240, 182),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment
-                    .center, // Align text in the center vertically
-                children: [
-                  Text(
-                    '$schemeyear',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30.0, // Increase the font size
+          child: Row(
+            children: [
+              SizedBox(
+                width: 320,
+                height: 100, // Increase the height value
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AdminSemesterList(schemeYear, widget.user),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    side: const BorderSide(
+                      width: 1,
+                      color: Color.fromARGB(255, 96, 49, 49),
                     ),
-                    textAlign: TextAlign
-                        .center, // Align text at the center horizontally
+                    backgroundColor: const Color.fromARGB(154, 255, 240, 182),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
-                ],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment
+                        .center, // Align text in the center vertically
+                    children: [
+                      Text(
+                        '$schemeYear',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30.0, // Increase the font size
+                        ),
+                        textAlign: TextAlign
+                            .center, // Align text at the center horizontally
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Delete Entry'),
+                        content: Text(
+                            'Are you sure you want to delete this Scheme?'),
+                        actions: [
+                          TextButton(
+                            child: Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text('Delete'),
+                            onPressed: () async {
+                              // Delete the entry from the database
+                              var db = await mongo.Db.create(
+                                  "mongodb+srv://admin_kp:admin123@cluster0.hlr4lt7.mongodb.net/e-class?retryWrites=true&w=majority");
+                              await db.open();
+                              mongo.DbCollection schemesCollection =
+                                  db.collection("schemes");
+                              await schemesCollection
+                                  .remove(mongo.where.eq('name', schemeYear));
+                              db.close();
+
+                              // Reload the page after deleting the entry
+                              await reloadData();
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
           ),
         ),
       );
     }
 
-    return schemeNameWdigets;
+    return schemeNameWidgets;
   }
 
   Future<void> reloadData() async {

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:e_class/pages/common widgets/page_app_bar.dart';
@@ -31,14 +33,14 @@ class _CreateSchemeState extends State<CreateScheme> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
+            title: const Text('Error'),
             content: Text('Scheme with name $name already exists.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -50,7 +52,8 @@ class _CreateSchemeState extends State<CreateScheme> {
 
       // Close the database connection
       await db.close();
-
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Batch Added')));
       // Navigate back to the previous screen
       Navigator.pop(context);
     }

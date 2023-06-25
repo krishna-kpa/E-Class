@@ -7,7 +7,7 @@ import 'package:mongo_dart/mongo_dart.dart' as mongo;
 class TeacherMyClassroom extends StatelessWidget {
   final dynamic user;
 
-  TeacherMyClassroom(this.user, {Key? key}) : super(key: key);
+  const TeacherMyClassroom(this.user, {Key? key}) : super(key: key);
 
   Future<List<Widget>> findSubjects(dynamic user) async {
     final availableSubjects = <Widget>[];
@@ -53,10 +53,10 @@ class TeacherMyClassroom extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddSubject()),
+            MaterialPageRoute(builder: (context) => AddSubject(user)),
           );
         },
         child: const Icon(Icons.add),

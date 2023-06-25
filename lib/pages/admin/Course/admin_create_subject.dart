@@ -37,8 +37,10 @@ class _CreateSubState extends State<CreateSub> {
     };
     await subjectsCollections.insert(subject);
     // Close the database connection
-    db.close().then((value) => Navigator.pop(context));
 
+    db.close().then((value) => Navigator.pop(context));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Subject Added')));
     // Navigate back to the previous screen
   }
 

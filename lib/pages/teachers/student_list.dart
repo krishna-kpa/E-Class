@@ -32,35 +32,37 @@ class _StudentListState extends State<StudentList> {
 
       studentNameWidgets.add(
         Container(
-          margin: EdgeInsets.all(5.0),
-          padding: EdgeInsets.all(6.0),
+          margin: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(6.0),
           decoration: BoxDecoration(
-            color: Color.fromARGB(154, 255, 240, 182),
+            color: const Color.fromARGB(154, 255, 240, 182),
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
-              color: Colors.brown,
-              width: 2.0,
+              color: Colors.black,
+              width: 1.5,
             ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Adm.no: $studentId',
-                style: TextStyle(
+                'Admission no: $studentId',
+                style: const TextStyle(
                   color: Colors.black,
-                  fontSize: 16.0,
+                  fontSize: 14.0, // Adjust the font size as desired
+                  fontStyle: FontStyle.italic, // Italicize the text
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Name: $studentName',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],

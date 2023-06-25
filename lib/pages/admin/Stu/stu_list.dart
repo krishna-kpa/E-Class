@@ -5,7 +5,6 @@ import 'package:e_class/pages/admin/Stu/stu_add.dart';
 
 class StudentList extends StatefulWidget {
   final String batchyear;
-  // ignore: prefer_typing_uninitialized_variables
   final user;
 
   StudentList(this.batchyear, this.user, {Key? key});
@@ -67,9 +66,33 @@ class _StudentListState extends State<StudentList> {
                   IconButton(
                     icon: Icon(Icons.delete),
                     color: Colors.black,
-                    onPressed: () async {
-                      // Delete the student from the database
-                      await deleteStudent(studentId);
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Delete Student'),
+                            content: Text(
+                                'Are you sure you want to delete this student?'),
+                            actions: [
+                              TextButton(
+                                child: Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: Text('Delete'),
+                                onPressed: () async {
+                                  // Delete the student from the database
+                                  await deleteStudent(studentId);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ],

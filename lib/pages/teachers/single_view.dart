@@ -1,3 +1,6 @@
+import 'package:e_class/pages/teachers/addMaterial.dart';
+import 'package:e_class/pages/teachers/fileupload_assignment.dart';
+import 'package:e_class/pages/teachers/fileupload_text.dart';
 import 'package:flutter/material.dart';
 import 'package:e_class/pages/teachers/single_view_button.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -44,38 +47,58 @@ class SingleView extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            heading,
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: const Color.fromARGB(255, 49, 30, 2),
-          iconTheme: const IconThemeData(
-              color: Colors.white), // Set the arrow color to white
+      appBar: AppBar(
+        title: Text(
+          heading,
+          style: const TextStyle(color: Colors.white),
         ),
-        body: Center(
-            child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Container(
-                  child: FutureBuilder<List<Widget>>(
-                    future: showContent(subject, heading, moduleNo, user),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return snapshot.data![index];
-                          },
-                        );
-                      } else {
-                        return const Text('No data');
-                      }
-                    },
-                  ),
-                ))));
+        backgroundColor: const Color.fromARGB(255, 49, 30, 2),
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Set the arrow color to white
+      ),
+      body: Center(
+          child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Container(
+                child: FutureBuilder<List<Widget>>(
+                  future: showContent(subject, heading, moduleNo, user),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return snapshot.data![index];
+                        },
+                      );
+                    } else {
+                      return const Text('No data');
+                    }
+                  },
+                ),
+              ))),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              if (heading == 'Notes') {
+                return FileUploadPage(user, heading, moduleNo, subject);
+              } else if (heading == 'Textbooks') {
+                return TFileUploadPage(user, heading, moduleNo, subject);
+              } else if (heading == 'Assignments') {
+                return AFileUploadPage(user, heading, moduleNo, subject);
+              } else {
+                return FileUploadPage(user, heading, moduleNo, subject);
+              }
+            }),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }

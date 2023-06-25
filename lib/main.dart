@@ -1,4 +1,4 @@
-import 'package:e_class/pages/login.dart';
+import 'package:e_class/delay.dart';
 import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
@@ -11,9 +11,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'E-Class',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 19, 10, 1)),
       ),
-      home: const Login(),
+      home: const Start(),
     );
   }
 }

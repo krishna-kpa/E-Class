@@ -1,3 +1,5 @@
+import 'package:e_class/pages/teachers/fileupload_text.dart';
+import 'package:e_class/pages/teachers/single_view.dart';
 import 'package:e_class/pages/teachers/student_list.dart';
 import 'package:e_class/pages/teachers/module_view.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +22,24 @@ class IndividualButton extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ModuleList(value, subject, user)));
+              builder: (context) =>  SingleView('Textbooks', subject, 0, user)));//textbooks view and upload
     } else if (value == 'Student List') {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => StudentList(subject['assignedBatchId'],
-                  user))); // create page to list students of the class
+              builder: (context) =>
+                  StudentList(subject['assignedBatchId'], user)));
+    } else if (value == 'Assignments') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ModuleList(value, subject,user))); //assignment view and upload
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ModuleList(value, subject, user)));
+              builder: (context) =>
+                  ModuleList(value, subject, user))); // notes view and upload
     }
   }
 

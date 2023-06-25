@@ -93,6 +93,8 @@ class _CreateTrPageState extends State<CreateTrPage> {
 
                   // Navigate back to the previous screen
                   Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Teacher Added')));
                 }
               },
               child: const Text('Create Teacher'),

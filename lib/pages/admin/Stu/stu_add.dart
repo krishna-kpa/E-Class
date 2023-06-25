@@ -98,7 +98,8 @@ class _CreateStudentState extends State<CreateStudent> {
 
                   // Close the database connection
                   db.close();
-
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Student Added')));
                   // Navigate back to the previous screen
                   Navigator.pop(context);
                 }
