@@ -87,6 +87,12 @@ class _FileUploadPageState extends State<FileUploadPage> {
     };
 
     await collection.insertOne(document);
+    var assignment = db.collection('assignment');
+    await assignment.updateOne(
+    mongo.where.eq('_id', widget.assignment['_id']),
+    mongo.modify.push('submittedStudents',  widget.user['id']),
+  );
+
 
     await db.close();
   }
