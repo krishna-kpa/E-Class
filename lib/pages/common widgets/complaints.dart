@@ -36,7 +36,7 @@ class _ReportScreenState extends State<ReportScreen> {
     };
     print("document created");
     await complaintCollection
-        .insertOne({"id": userId, "date": _currentDate, "issue": issue});
+        .insertOne(complaint);
     db.close();
 
     ScaffoldMessenger.of(context)
